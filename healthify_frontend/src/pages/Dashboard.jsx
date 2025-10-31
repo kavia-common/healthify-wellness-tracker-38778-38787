@@ -1,14 +1,20 @@
 //
-// Dashboard page - mobile-first wiring to state/services with loading and error states
+/**
+ * Dashboard page - mobile-first wiring to state/services with loading and error states.
+ * Refactored to use common Card and Button components with retro accents.
+ */
 //
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useAppActions, useAppState } from '../context/AppStateContext';
 import * as workoutsService from '../services/workoutsService';
 import * as nutritionService from '../services/nutritionService';
 import * as habitsService from '../services/habitsService';
 import * as mindfulnessService from '../services/mindfulnessService';
+
+import Card from '../components/common/Card';
+import Button from '../components/common/Button';
+import RetroBadge from '../components/common/RetroBadge';
 
 // PUBLIC_INTERFACE
 export default function Dashboard() {
@@ -66,60 +72,81 @@ export default function Dashboard() {
 
   return (
     <section className="fade-in" aria-labelledby="dashboard-title" style={{ margin: '1rem 0 5rem' }}>
-      <header className="card" style={{ marginBottom: '1rem' }}>
-        <div className="card-header">Welcome back</div>
-        <div className="card-body">
-          <h2 id="dashboard-title" style={{ margin: 0, fontSize: 20 }}>Dashboard</h2>
-          <p className="text-muted" style={{ marginTop: 8 }}>
-            Your wellness at a glance. Use the tabs below to explore Workouts, Nutrition, Habits, Mindfulness, and your Profile.
-          </p>
-          <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" onClick={toggleTheme} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
-              {theme === 'light' ? '🌙 Dark mode' : '☀️ Light mode'}
-            </button>
-            <Link to="/workouts" className="btn btn-outline">Start a workout</Link>
-          </div>
+      <Card
+        title="Welcome back"
+        headerRight={<RetroBadge label="BETA" icon="🕹️" />}
+        retro
+        style={{ marginBottom: '1rem' }}
+      >
+        <h2 id="dashboard-title" style={{ margin: 0, fontSize: 20 }}>Dashboard</h2>
+        <p className="text-muted" style={{ marginTop: 8 }}>
+          Your wellness at a glance. Use the tabs below to explore Workouts, Nutrition, Habits, Mindfulness, and your Profile.
+        </p>
+        <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <Button
+            variant="primary"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            leadingIcon={theme === 'light' ? '🌙' : '☀️'}
+          >
+            {theme === 'light' ? 'Dark mode' : 'Light mode'}
+          </Button>
+          <Button variant="outline" to="/workouts">Start a workout</Button>
         </div>
-      </header>
+      </Card>
 
       {loading && (
-        <div className="card" role="status" aria-live="polite" style={{ marginBottom: '1rem' }}>
-          <div className="card-body">Loading your latest activity…</div>
-        </div>
+        <Card
+          as="div"
+          role="status"
+          aria-live="polite"
+          style={{ marginBottom: '1rem' }}
+        >
+          Loading your latest activity…
+        </Card>
       )}
 
       {error && (
-        <div className="card" role="alert" aria-live="assertive" style={{ marginBottom: '1rem', borderColor: 'var(--color-error)' }}>
-          <div className="card-body">
-            <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
-            <span className="text-muted">{String(error)}</span>
-          </div>
-        </div>
+        <Card
+          as="div"
+          role="alert"
+          aria-live="assertive"
+          style={{ marginBottom: '1rem', borderColor: 'var(--color-error)' }}
+        >
+          <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
+          <span className="text-muted">{String(error)}</span>
+        </Card>
       )}
 
-      <div className="card" style={{ marginBottom: '1rem' }}>
-        <div className="card-header">Quick stats</div>
-        <div className="card-body">
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <li className="card" style={{ padding: 12 }}>
-              <div className="text-muted" style={{ fontSize: 12 }}>Workouts</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{totalWorkouts}</div>
-            </li>
-            <li className="card" style={{ padding: 12 }}>
-              <div className="text-muted" style={{ fontSize: 12 }}>Calories</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{dailyCalories}</div>
-            </li>
-            <li className="card" style={{ padding: 12 }}>
-              <div className="text-muted" style={{ fontSize: 12 }}>Habits</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{totalHabits}</div>
-            </li>
-            <li className="card" style={{ padding: 12 }}>
-              <div className="text-muted" style={{ fontSize: 12 }}>Mindfulness</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{totalMindfulness}</div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Card title="Quick stats" style={{ marginBottom: '1rem' }}>
+        <ul
+          style={{
+            listStyle: 'none',
+            padding: 0,
+            margin: 0,
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 12,
+          }}
+        >
+          <Card as="li" style={{ padding: 12 }}>
+            <div className="text-muted" style={{ fontSize: 12 }}>Workouts</div>
+            <div style={{ fontWeight: 700, fontSize: 18 }}>{totalWorkouts}</div>
+          </Card>
+          <Card as="li" style={{ padding: 12 }}>
+            <div className="text-muted" style={{ fontSize: 12 }}>Calories</div>
+            <div style={{ fontWeight: 700, fontSize: 18 }}>{dailyCalories}</div>
+          </Card>
+          <Card as="li" style={{ padding: 12 }}>
+            <div className="text-muted" style={{ fontSize: 12 }}>Habits</div>
+            <div style={{ fontWeight: 700, fontSize: 18 }}>{totalHabits}</div>
+          </Card>
+          <Card as="li" style={{ padding: 12 }}>
+            <div className="text-muted" style={{ fontSize: 12 }}>Mindfulness</div>
+            <div style={{ fontWeight: 700, fontSize: 18 }}>{totalMindfulness}</div>
+          </Card>
+        </ul>
+      </Card>
 
       <p className="text-muted" style={{ fontSize: 12 }}>
         Placeholder content. Features coming soon.

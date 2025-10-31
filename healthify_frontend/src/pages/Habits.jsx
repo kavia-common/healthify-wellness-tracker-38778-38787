@@ -1,9 +1,13 @@
 //
-// Habits page - loads habits into AppState with loading/error indicators
+/**
+ * Habits page - loads habits into AppState with loading/error indicators.
+ * Refactored to use common Card component.
+ */
 //
 import { useEffect, useState } from 'react';
 import { useAppActions, useAppState } from '../context/AppStateContext';
 import * as habitsService from '../services/habitsService';
+import Card from '../components/common/Card';
 
 // PUBLIC_INTERFACE
 export default function Habits() {
@@ -37,37 +41,34 @@ export default function Habits() {
 
   return (
     <section className="fade-in" aria-labelledby="habits-title" style={{ margin: '1rem 0 5rem' }}>
-      <div className="card" style={{ marginBottom: '1rem' }}>
-        <div className="card-header">Habits</div>
-        <div className="card-body">
-          <h2 id="habits-title" style={{ marginTop: 0, fontSize: 20 }}>Habits</h2>
-          <p className="text-muted">
-            Build routines and maintain streaks. Coming soon.
-          </p>
+      <Card title="Habits" style={{ marginBottom: '1rem' }}>
+        <h2 id="habits-title" style={{ marginTop: 0, fontSize: 20 }}>Habits</h2>
+        <p className="text-muted">
+          Build routines and maintain streaks. Coming soon.
+        </p>
 
-          {loading && (
-            <div className="card" role="status" aria-live="polite" style={{ padding: 12, marginTop: 12 }}>
-              Loading habits…
-            </div>
-          )}
+        {loading && (
+          <Card as="div" role="status" aria-live="polite" style={{ padding: 12, marginTop: 12 }}>
+            Loading habits…
+          </Card>
+        )}
 
-          {error && (
-            <div className="card" role="alert" aria-live="assertive" style={{ padding: 12, marginTop: 12, borderColor: 'var(--color-error)' }}>
-              <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
-              <span className="text-muted">{String(error)}</span>
-            </div>
-          )}
+        {error && (
+          <Card as="div" role="alert" aria-live="assertive" style={{ padding: 12, marginTop: 12, borderColor: 'var(--color-error)' }}>
+            <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
+            <span className="text-muted">{String(error)}</span>
+          </Card>
+        )}
 
-          <div className="card" style={{ padding: 12, marginTop: 12 }}>
-            <div className="text-muted" style={{ fontSize: 12 }}>Active streaks</div>
-            <div style={{ fontWeight: 700 }}>{activeCount || '—'}</div>
-          </div>
+        <Card as="div" style={{ padding: 12, marginTop: 12 }}>
+          <div className="text-muted" style={{ fontSize: 12 }}>Active streaks</div>
+          <div style={{ fontWeight: 700 }}>{activeCount || '—'}</div>
+        </Card>
 
-          <div className="text-muted" style={{ marginTop: 12, fontSize: 12 }}>
-            Total habits: {items.length}
-          </div>
+        <div className="text-muted" style={{ marginTop: 12, fontSize: 12 }}>
+          Total habits: {items.length}
         </div>
-      </div>
+      </Card>
     </section>
   );
 }

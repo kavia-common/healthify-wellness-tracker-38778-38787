@@ -1,9 +1,13 @@
 //
-// Nutrition page - loads meals into AppState with loading/error indicators
+/**
+ * Nutrition page - loads meals into AppState with loading/error indicators.
+ * Refactored to use common Card component.
+ */
 //
 import { useEffect, useState } from 'react';
 import { useAppActions, useAppState } from '../context/AppStateContext';
 import * as nutritionService from '../services/nutritionService';
+import Card from '../components/common/Card';
 
 // PUBLIC_INTERFACE
 export default function Nutrition() {
@@ -37,33 +41,30 @@ export default function Nutrition() {
 
   return (
     <section className="fade-in" aria-labelledby="nutrition-title" style={{ margin: '1rem 0 5rem' }}>
-      <div className="card" style={{ marginBottom: '1rem' }}>
-        <div className="card-header">Nutrition</div>
-        <div className="card-body">
-          <h2 id="nutrition-title" style={{ marginTop: 0, fontSize: 20 }}>Nutrition</h2>
-          <p className="text-muted">
-            Track meals, macros, and hydration. Coming soon.
-          </p>
+      <Card title="Nutrition" style={{ marginBottom: '1rem' }}>
+        <h2 id="nutrition-title" style={{ marginTop: 0, fontSize: 20 }}>Nutrition</h2>
+        <p className="text-muted">
+          Track meals, macros, and hydration. Coming soon.
+        </p>
 
-          {loading && (
-            <div className="card" role="status" aria-live="polite" style={{ padding: 12, marginTop: 12 }}>
-              Loading meals…
-            </div>
-          )}
+        {loading && (
+          <Card as="div" role="status" aria-live="polite" style={{ padding: 12, marginTop: 12 }}>
+            Loading meals…
+          </Card>
+        )}
 
-          {error && (
-            <div className="card" role="alert" aria-live="assertive" style={{ padding: 12, marginTop: 12, borderColor: 'var(--color-error)' }}>
-              <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
-              <span className="text-muted">{String(error)}</span>
-            </div>
-          )}
+        {error && (
+          <Card as="div" role="alert" aria-live="assertive" style={{ padding: 12, marginTop: 12, borderColor: 'var(--color-error)' }}>
+            <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
+            <span className="text-muted">{String(error)}</span>
+          </Card>
+        )}
 
-          <div className="card" style={{ padding: 12, marginTop: 12 }}>
-            <div className="text-muted" style={{ fontSize: 12 }}>Today’s summary</div>
-            <div style={{ fontWeight: 700 }}>{calories} kcal • {meals.length} meal(s)</div>
-          </div>
-        </div>
-      </div>
+        <Card as="div" style={{ padding: 12, marginTop: 12 }}>
+          <div className="text-muted" style={{ fontSize: 12 }}>Today’s summary</div>
+          <div style={{ fontWeight: 700 }}>{calories} kcal • {meals.length} meal(s)</div>
+        </Card>
+      </Card>
     </section>
   );
 }

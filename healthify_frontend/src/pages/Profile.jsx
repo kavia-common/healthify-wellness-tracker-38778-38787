@@ -1,9 +1,14 @@
 //
-// Profile page - accessible, mobile-first with optional debug footer
+/**
+ * Profile page - accessible, mobile-first with optional debug footer.
+ * Refactored to use common Card and Button components.
+ */
 //
 import { useEffect, useMemo, useState } from 'react';
 import { getConfig, getFeatureFlags } from '../utils/env';
 import { healthcheck } from '../services/apiClient';
+import Card from '../components/common/Card';
+import Button from '../components/common/Button';
 
 // PUBLIC_INTERFACE
 export default function Profile() {
@@ -63,35 +68,35 @@ export default function Profile() {
 
   return (
     <section className="fade-in" aria-labelledby="profile-title" style={{ margin: '1rem 0 5rem' }}>
-      <div className="card" style={{ marginBottom: '1rem' }}>
-        <div className="card-header">Profile</div>
-        <div className="card-body">
-          <h2 id="profile-title" style={{ marginTop: 0, fontSize: 20 }}>Profile</h2>
-          <p className="text-muted">
-            Manage your preferences and account details. Coming soon.
-          </p>
-          <div className="card" style={{ padding: 12, marginTop: 12 }}>
-            <div className="text-muted" style={{ fontSize: 12 }}>Display name</div>
-            <div style={{ fontWeight: 700 }}>—</div>
-          </div>
-        </div>
-      </div>
+      <Card title="Profile" style={{ marginBottom: '1rem' }}>
+        <h2 id="profile-title" style={{ marginTop: 0, fontSize: 20 }}>Profile</h2>
+        <p className="text-muted">
+          Manage your preferences and account details. Coming soon.
+        </p>
+
+        <Card as="div" style={{ marginTop: 12 }}>
+          <div className="text-muted" style={{ fontSize: 12 }}>Display name</div>
+          <div style={{ fontWeight: 700 }}>—</div>
+        </Card>
+      </Card>
 
       {showDebug && (
-        <div className="card" style={{ marginBottom: '1rem' }}>
-          <div className="card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span>Debug</span>
-            <button
-              className="btn btn-outline"
+        <Card
+          title="Debug"
+          headerRight={
+            <Button
+              variant="outline"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="debug-panel"
             >
               {open ? 'Hide' : 'Show'}
-            </button>
-          </div>
+            </Button>
+          }
+          style={{ marginBottom: '1rem' }}
+        >
           {open && (
-            <div id="debug-panel" className="card-body">
+            <div id="debug-panel">
               <div style={{ marginBottom: 12 }}>
                 <div className="text-muted" style={{ fontSize: 12, marginBottom: 6 }}>Resolved configuration</div>
                 <pre className="hide-overflow" style={{ margin: 0, padding: 12, background: 'var(--color-surface)', borderRadius: 8, border: '1px solid var(--border-color)' }}>
@@ -102,15 +107,15 @@ export default function Profile() {
               <div style={{ marginTop: 12 }}>
                 <div className="text-muted" style={{ fontSize: 12, marginBottom: 6 }}>Healthcheck</div>
                 {hcLoading && (
-                  <div className="card" role="status" aria-live="polite" style={{ padding: 12, marginBottom: 8 }}>
+                  <Card as="div" role="status" aria-live="polite" style={{ padding: 12, marginBottom: 8 }}>
                     Checking backend…
-                  </div>
+                  </Card>
                 )}
                 {hcError && (
-                  <div className="card" role="alert" aria-live="assertive" style={{ padding: 12, marginBottom: 8, borderColor: 'var(--color-error)' }}>
+                  <Card as="div" role="alert" aria-live="assertive" style={{ padding: 12, marginBottom: 8, borderColor: 'var(--color-error)' }}>
                     <strong style={{ color: 'var(--color-error)' }}>Error: </strong>
                     <span className="text-muted">{String(hcError)}</span>
-                  </div>
+                  </Card>
                 )}
                 {hc && (
                   <pre className="hide-overflow" style={{ margin: 0, padding: 12, background: 'var(--color-surface)', borderRadius: 8, border: '1px solid var(--border-color)' }}>
@@ -118,14 +123,14 @@ export default function Profile() {
                   </pre>
                 )}
                 <div style={{ marginTop: 8 }}>
-                  <button className="btn btn-primary" onClick={onReloadHealth} disabled={hcLoading}>
+                  <Button variant="primary" onClick={onReloadHealth} disabled={hcLoading}>
                     {hcLoading ? 'Checking…' : 'Run healthcheck'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
           )}
-        </div>
+        </Card>
       )}
     </section>
   );
