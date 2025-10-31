@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '../../context/ThemeContext';
 import { AppStateProvider } from '../../context/AppStateContext';
@@ -52,21 +52,24 @@ describe('Dashboard', () => {
 
     // Main hero card
     expect(await screen.findByText(/welcome back/i)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /dashboard/i, level: 2 })).toBeInTheDocument();
 
-    // Quick stats card and labels
-    expect(screen.getByText(/quick stats/i)).toBeInTheDocument();
-    expect(screen.getByText(/workouts/i)).toBeInTheDocument();
-    expect(screen.getByText(/calories/i)).toBeInTheDocument();
-    expect(screen.getByText(/habits/i)).toBeInTheDocument();
-    expect(screen.getByText(/mindfulness/i)).toBeInTheDocument();
+    // Quick stats card and labels (scope within the card to avoid matching navigation labels)
+    const quickStatsTitle = screen.getByText(/quick stats/i);
+    const quickStatsCard = quickStatsTitle.closest('section');
+    expect(quickStatsCard).toBeInTheDocument();
+    const qs = within(quickStatsCard);
+    expect(qs.getByText(/workouts/i)).toBeInTheDocument();
+    expect(qs.getByText(/calories/i)).toBeInTheDocument();
+    expect(qs.getByText(/habits/i)).toBeInTheDocument();
+    expect(qs.getByText(/mindfulness/i)).toBeInTheDocument();
 
     // Expect four list items for stats
-    const statItems = screen.getAllByRole('listitem');
+    const statItems = qs.getAllByRole('listitem');
     expect(statItems.length).toBe(4);
 
     // With mocked empty data, counts should be zeros; allow >=4 to avoid fragility
-    const zeros = screen.getAllByText(/^0$/);
+    const zeros = qs.getAllByText(/^0$/);
     expect(zeros.length).toBeGreaterThanOrEqual(4);
 
     // Basic placeholder/learn link remains present

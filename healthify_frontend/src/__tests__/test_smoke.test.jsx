@@ -51,7 +51,7 @@ describe('App smoke tests', () => {
     renderApp();
 
     // TopBar and Dashboard content both include "Dashboard" as headings; ensure at least one is present
-    const heading = await screen.findByRole('heading', { name: /dashboard/i });
+    const heading = await screen.findByRole('heading', { name: /dashboard/i, level: 2 });
     expect(heading).toBeInTheDocument();
 
     // Bottom navigation should be present
@@ -65,7 +65,7 @@ describe('App smoke tests', () => {
     const workoutsLink = screen.getByRole('link', { name: /workouts/i });
     fireEvent.click(workoutsLink);
 
-    const workoutsHeading = await screen.findByRole('heading', { name: /workouts/i });
+    const workoutsHeading = await screen.findByRole('heading', { name: /workouts/i, level: 2 });
     expect(workoutsHeading).toBeInTheDocument();
   });
 
@@ -75,7 +75,7 @@ describe('App smoke tests', () => {
     const nutritionLink = screen.getByRole('link', { name: /nutrition/i });
     fireEvent.click(nutritionLink);
 
-    const nutritionHeading = await screen.findByRole('heading', { name: /nutrition/i });
+    const nutritionHeading = await screen.findByRole('heading', { name: /nutrition/i, level: 2 });
     expect(nutritionHeading).toBeInTheDocument();
   });
 });
