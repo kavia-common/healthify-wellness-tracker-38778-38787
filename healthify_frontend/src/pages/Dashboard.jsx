@@ -4,11 +4,14 @@
 
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useAppState } from '../context/AppStateContext';
 
 // PUBLIC_INTERFACE
 export default function Dashboard() {
   /** The main dashboard showing quick stats and entry points to core features. */
   const { theme, toggleTheme } = useTheme();
+  const { workouts, nutrition, habits, mindfulness, user } = useAppState();
+  const dailyCalories = (nutrition?.meals || []).reduce((sum, m) => sum + (m?.calories || 0), 0);
 
   return (
     <section className="fade-in" aria-labelledby="dashboard-title" style={{ margin: '1rem 0 5rem' }}>
@@ -38,15 +41,15 @@ export default function Dashboard() {
             </li>
             <li className="card" style={{ padding: 12 }}>
               <div className="text-muted" style={{ fontSize: 12 }}>Calories</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>—</div>
+              <div style={{ fontWeight: 700, fontSize: 18 }}>{dailyCalories}</div>
             </li>
             <li className="card" style={{ padding: 12 }}>
               <div className="text-muted" style={{ fontSize: 12 }}>Habits</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>—</div>
+              <div style={{ fontWeight: 700, fontSize: 18 }}>{(habits?.items || []).length}</div>
             </li>
             <li className="card" style={{ padding: 12 }}>
               <div className="text-muted" style={{ fontSize: 12 }}>Mindfulness</div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>—</div>
+              <div style={{ fontWeight: 700, fontSize: 18 }}>{(mindfulness?.sessions || []).length}</div>
             </li>
           </ul>
         </div>
