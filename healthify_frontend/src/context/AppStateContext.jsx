@@ -166,6 +166,7 @@ const T = {
   HABIT_REMOVE: 'app/habits/REMOVE',
 
   // mindfulness
+  MINDFULNESS_SESSIONS_SET: 'app/mindfulness/SESSIONS_SET',
   MINDFULNESS_SESSION_ADD: 'app/mindfulness/SESSION_ADD',
   MINDFULNESS_SESSION_REMOVE: 'app/mindfulness/SESSION_REMOVE',
   MINDFULNESS_SET_CURRENT: 'app/mindfulness/SET_CURRENT',
@@ -258,6 +259,8 @@ function reducer(state, action) {
       return { ...state, habits: { ...state.habits, items: removeById(state.habits.items, action.payload) } };
 
     // mindfulness
+    case T.MINDFULNESS_SESSIONS_SET:
+      return { ...state, mindfulness: { ...state.mindfulness, sessions: Array.isArray(action.payload) ? action.payload : [] } };
     case T.MINDFULNESS_SESSION_ADD:
       return { ...state, mindfulness: { ...state.mindfulness, sessions: [action.payload, ...state.mindfulness.sessions] } };
     case T.MINDFULNESS_SESSION_REMOVE:
@@ -385,6 +388,11 @@ export function removeHabit(id) {
 
 /** MINDFULNESS */
 // PUBLIC_INTERFACE
+export function setSessions(sessions) {
+  /** Replaces the mindfulness sessions list with a new array. */
+  return { type: T.MINDFULNESS_SESSIONS_SET, payload: sessions };
+}
+// PUBLIC_INTERFACE
 export function addSession(session) {
   /** Adds a mindfulness session to the start of the sessions list. */
   return { type: T.MINDFULNESS_SESSION_ADD, payload: session };
@@ -447,6 +455,7 @@ export const actions = {
   toggleHabit,
   removeHabit,
   // mindfulness
+  setSessions,
   addSession,
   removeSession,
   setCurrentPractice,
@@ -531,6 +540,7 @@ export function useAppActions() {
       toggleHabit: (id) => dispatch(toggleHabit(id)),
       removeHabit: (id) => dispatch(removeHabit(id)),
       // mindfulness
+      setSessions: (items) => dispatch(setSessions(items)),
       addSession: (s) => dispatch(addSession(s)),
       removeSession: (id) => dispatch(removeSession(id)),
       setCurrentPractice: (k) => dispatch(setCurrentPractice(k)),
