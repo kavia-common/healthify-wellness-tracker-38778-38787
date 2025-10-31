@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useTheme } from './context/ThemeContext';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="App">
+    <div className="App retro-scanline">
       <header className="App-header">
-        <button 
-          className="theme-toggle" 
+        <button
+          className="theme-toggle"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
         >
           {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
         </button>
+
+        <span className="retro-badge" style={{ marginBottom: '1rem' }}>
+          Ocean Pro
+        </span>
+
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.

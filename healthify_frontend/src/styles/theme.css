@@ -1,0 +1,102 @@
+/* Theme variables: Ocean Professional with subtle retro accents */
+:root {
+  /* Core tokens */
+  --color-primary: #2563EB;
+  --color-secondary: #F59E0B;
+  --color-success: #F59E0B;
+  --color-error: #EF4444;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #111827;
+
+  /* Derived */
+  --brand-gradient: linear-gradient(180deg, rgba(59,130,246,0.10), #f9fafb);
+  --app-bg-gradient: var(--brand-gradient);
+  --border-color: rgba(17, 24, 39, 0.08); /* slate-900 @ 8% */
+  --muted-text: rgba(17, 24, 39, 0.65);
+
+  /* Effects */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --ring: 0 0 0 3px rgba(37,99,235,0.35); /* primary-600 @ 35% */
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* Dark mode overrides */
+html[data-theme="dark"] {
+  --color-background: #0b1220; /* deep ocean night */
+  --color-surface: #0f172a;    /* slate-900 */
+  --color-text: #e5e7eb;       /* gray-200 */
+  --brand-gradient: linear-gradient(180deg, rgba(59,130,246,0.15), #0b1220);
+  --app-bg-gradient: var(--brand-gradient);
+  --border-color: rgba(255,255,255,0.08);
+  --muted-text: rgba(229,231,235,0.72);
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.45);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.55);
+  --ring: 0 0 0 3px rgba(59,130,246,0.45);
+}
+
+/* Retro accent utilities */
+.retro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #111827;
+  background: linear-gradient(180deg, rgba(245,158,11,0.92), rgba(245,158,11,0.82));
+  border: 2px solid rgba(17,24,39,0.12);
+  border-radius: 6px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,0.08),
+    0 1px 0 rgba(17,24,39,0.12),
+    0 4px 0 rgba(17,24,39,0.06);
+}
+
+/* Subtle CRT-style scanlines overlay */
+.retro-scanline {
+  position: relative;
+}
+
+.retro-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.045) 0px,
+    rgba(0,0,0,0.045) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  mix-blend-mode: multiply;
+  border-radius: inherit;
+}
+
+html[data-theme="dark"] .retro-scanline::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  mix-blend-mode: screen;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  outline: none;
+  box-shadow: var(--ring);
+}
