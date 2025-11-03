@@ -1,13 +1,43 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Base resets - mobile first */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body, #root {
+  height: 100%;
 }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Link styling baseline */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Buttons baseline */
+button {
+  font: inherit;
+}
+
+/* Forms baseline */
+input, select, textarea {
+  font: inherit;
+}
+
+/* Placeholder: CSS variables can be dynamically updated by theme and env flags
+   Example linkage (handled in JS/Theme later steps):
+   - REACT_APP_NODE_ENV could toggle more contrast in non-production
+   - REACT_APP_FEATURE_FLAGS may switch additional palettes/features
+*/

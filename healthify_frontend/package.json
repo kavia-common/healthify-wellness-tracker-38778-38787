@@ -1,17 +1,21 @@
 {
-  "name": "react-kavia",
+  "name": "healthify-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "react-router-dom": "^6.26.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env GENERATE_SOURCEMAP=${REACT_APP_ENABLE_SOURCE_MAPS:-true} react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:ci": "CI=true react-scripts test --watchAll=false --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js,.jsx",
+    "format": "prettier --write \"src/**/*.{js,jsx,css,md}\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -29,6 +33,7 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "prettier": "^3.2.5"
   }
 }
