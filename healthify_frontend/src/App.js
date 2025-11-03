@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import AppRouter, { AuthProvider } from './routes/Router';
+import AppRouter from './routes/Router';
 import RetroNavbar from './components/RetroNavbar';
 import BottomNav from './components/BottomNav';
+import { AppProvider } from './state/AppProvider';
 
 /**
  * PUBLIC_INTERFACE
@@ -50,11 +51,11 @@ function App() {
         }
       />
 
-      {/* Router with temporary in-memory auth provider */}
+      {/* Router wrapped with global AppProvider (auth, user, flags) */}
       <main style={{ paddingBottom: 76 /* space for bottom nav */ }}>
-        <AuthProvider>
+        <AppProvider>
           <AppRouter />
-        </AuthProvider>
+        </AppProvider>
       </main>
 
       <BottomNav items={navItems} />

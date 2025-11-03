@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -7,47 +7,7 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-
-// PUBLIC_INTERFACE
-export const AuthContext = createContext({
-  /** Indicates if a user is authenticated */
-  isAuthenticated: false,
-  /** Login function */
-  login: () => {},
-  /** Logout function */
-  logout: () => {},
-});
-
-/**
- * PUBLIC_INTERFACE
- * useAuth
- * Hook to access authentication state.
- */
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
-/**
- * PUBLIC_INTERFACE
- * AuthProvider
- * Temporary in-memory auth provider. In a later step this should be replaced
- * by a real AppProvider wired to backend authentication.
- */
-export function AuthProvider({ children }) {
-  // Temporary stub: keep auth in local state. Replace with real auth later.
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const value = useMemo(
-    () => ({
-      isAuthenticated,
-      login: () => setIsAuthenticated(true),
-      logout: () => setIsAuthenticated(false),
-    }),
-    [isAuthenticated]
-  );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+import useAuth from '../state/useAuth';
 
 /**
  * PUBLIC_INTERFACE
@@ -91,7 +51,11 @@ function LoginPage() {
   return (
     <PageContainer title="Login">
       <p className="sr-note">Authenticate to continue.</p>
-      <button className="theme-toggle" onClick={login} aria-label="Login">
+      <button
+        className="theme-toggle"
+        onClick={() => login({ email: 'demo@example.com', password: 'demo' })}
+        aria-label="Login"
+      >
         Sign In
       </button>
     </PageContainer>
