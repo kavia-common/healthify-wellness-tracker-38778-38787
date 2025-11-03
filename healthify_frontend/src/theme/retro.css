@@ -1,0 +1,170 @@
+/* Optional note: for true pixel fonts you can add a webfont link in index.html.
+   We keep it lightweight by using a monospace stack approximating retro aesthetics. */
+
+/* Global base applying retro font stack and mobile-first sizing */
+html, body {
+  font-family: var(--font-sans, ui-monospace), monospace;
+  font-size: 14px; /* mobile-first base */
+  line-height: 1.4;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Subtle halftone/scanline background helper */
+.retro-scanlines {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(37, 99, 235, 0.06), rgba(255,255,255,0)) 0 0/100% 100%,
+    repeating-linear-gradient(180deg, rgba(0,0,0,0.06) 0, rgba(0,0,0,0.06) 1px, transparent 2px, transparent 4px);
+}
+
+/* Gradient accent utility (Ocean Professional) */
+.retro-gradient {
+  background-image: linear-gradient(135deg, rgba(37,99,235,0.10), rgba(249,250,251,0.0));
+}
+
+/* Card component with thick border and subtle shadow */
+.retro-card {
+  background: var(--color-surface);
+  border: var(--retro-border-width) solid var(--border-color);
+  border-radius: var(--radius-2);
+  box-shadow: var(--elevation-1);
+  padding: var(--space-4);
+}
+
+/* Elevated variant */
+.retro-card--elevated {
+  box-shadow: var(--elevation-2);
+}
+
+/* Retro button with thick outline and pixel-esque feel */
+.retro-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: var(--retro-border-width) solid #0b1a3a1a; /* subtle */
+  border-radius: var(--radius-1);
+  padding: 10px 16px;
+  font-weight: 700;
+  text-transform: none;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.18), 0 8px 16px var(--color-shadow);
+  transition: transform 120ms ease, box-shadow 160ms ease, filter 160ms ease, opacity 160ms ease;
+}
+
+.retro-button:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.05);
+}
+
+.retro-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.18), 0 4px 10px var(--color-shadow);
+}
+
+/* Secondary/Amber button */
+.retro-button--secondary {
+  background: var(--color-secondary);
+  color: #1f2937;
+}
+
+/* Destructive button */
+.retro-button--danger {
+  background: var(--color-error);
+  color: #fff;
+}
+
+/* Accessible focus states with high-contrast outline */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--retro-outline);
+  outline-offset: 2px;
+}
+
+/* Retro input baseline */
+.retro-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-1);
+  border: var(--retro-border-width) solid var(--border-color);
+  background: var(--color-surface);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.04);
+}
+
+.retro-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Retro header styles */
+.retro-title {
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: var(--text-primary);
+  text-shadow: 0 2px 0 rgba(0,0,0,0.08);
+}
+
+.retro-subtitle {
+  font-size: 14px;
+  margin-top: 6px;
+  margin-bottom: 0;
+  color: var(--text-secondary);
+}
+
+/* Container utility */
+.retro-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4);
+  max-width: 960px;
+}
+
+/* Divider */
+.retro-divider {
+  height: 0;
+  border: 0;
+  border-top: var(--retro-border-width) dashed var(--border-color);
+  margin: var(--space-4) 0;
+}
+
+/* Badges */
+.retro-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: var(--retro-border-width) solid var(--border-color);
+  border-radius: var(--radius-1);
+  background: var(--color-surface);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.retro-badge--success { border-color: #10b98133; color: #065f46; background: #ecfdf5; }
+.retro-badge--warning { border-color: #f59e0b33; color: #7c2d12; background: #fffbeb; }
+.retro-badge--danger  { border-color: #ef444433; color: #7f1d1d; background: #fef2f2; }
+
+/* Link styling */
+a.retro-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* App shell helpers */
+.retro-app {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* Responsive tweaks */
+@media (min-width: 640px) {
+  .retro-title { font-size: 32px; }
+}
+
+@media (min-width: 768px) {
+  .retro-title { font-size: 36px; }
+}

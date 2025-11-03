@@ -1,0 +1,86 @@
+:root {
+  /* Core palette - Ocean Professional */
+  --color-primary: #2563EB;   /* primary */
+  --color-secondary: #F59E0B; /* secondary/success */
+  --color-success: #16A34A;
+  --color-error: #EF4444;     /* error */
+
+  --color-text: #111827;      /* text */
+  --color-bg: #f9fafb;        /* background */
+  --color-surface: #ffffff;   /* surface */
+
+  /* Extended neutrals */
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Elevation */
+  --elevation-1: 0 1px 0 rgba(0,0,0,0.06), 0 6px 14px rgba(0,0,0,0.06);
+  --elevation-2: 0 2px 0 rgba(0,0,0,0.10), 0 12px 24px rgba(0,0,0,0.10);
+
+  /* Spacing scale (4px baseline, mobile-first) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-0: 0;
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 12px;
+
+  /* Retro specifics */
+  --retro-border-width: 2px;  /* thicker borders for retro look */
+  --retro-outline: 3px solid #111827; /* high-contrast focus */
+
+  /* Typography tokens (pixel-esque stack leading with retro) */
+  --font-sans: "Press Start 2P", "VT323", "IBM Plex Mono", ui-monospace, SFMono-Regular,
+               Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Semantic aliases used by app */
+  --bg-primary: var(--color-bg);
+  --bg-secondary: #eef2ff;
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-muted);
+  --border-color: var(--color-border);
+  --button-bg: var(--color-primary);
+  --button-text: #ffffff;
+  --accent: var(--color-secondary);
+}
+
+/* Dark scheme (opt-in via data-theme="dark") */
+:root[data-theme="dark"] {
+  --color-text: #e5e7eb;
+  --color-bg: #0b1220;
+  --color-surface: #0f172a;
+  --color-border: #1f2937;
+  --color-muted: #9ca3af;
+  --color-shadow: rgba(0, 0, 0, 0.35);
+
+  --bg-primary: var(--color-bg);
+  --bg-secondary: #0b1220;
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-muted);
+  --border-color: var(--color-border);
+  --button-bg: #1d4ed8;
+  --button-text: #ffffff;
+  --accent: var(--color-secondary);
+}
+
+/* Utility spacing classes (lightweight) */
+.u-m-0 { margin: 0 !important; }
+.u-mt-2 { margin-top: var(--space-2) !important; }
+.u-mt-4 { margin-top: var(--space-4) !important; }
+.u-mb-2 { margin-bottom: var(--space-2) !important; }
+.u-mb-4 { margin-bottom: var(--space-4) !important; }
+.u-p-2 { padding: var(--space-2) !important; }
+.u-p-4 { padding: var(--space-4) !important; }
+.u-px-4 { padding-left: var(--space-4) !important; padding-right: var(--space-4) !important; }
+.u-py-2 { padding-top: var(--space-2) !important; padding-bottom: var(--space-2) !important; }

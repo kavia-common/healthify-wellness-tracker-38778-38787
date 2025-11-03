@@ -1,27 +1,4 @@
-/* Theme Variables (will be refined later for Retro theme) */
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
-  --button-bg: #2563EB;
-  --button-text: #ffffff;
-  --accent: #F59E0B; /* Amber accent */
-}
-
-[data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #111827;
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-  --border-color: #1f2937;
-  --button-bg: #1d4ed8;
-  --button-text: #ffffff;
-  --accent: #F59E0B;
-}
-
-/* App Shell */
+/* App Shell using tokens + retro utilities */
 .App {
   text-align: center;
   background-color: var(--bg-primary);
@@ -30,6 +7,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Optional header area if needed */
 .App-header {
   background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
   min-height: 100vh;
@@ -37,22 +15,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--space-6);
   position: relative;
 }
 
-/* Buttons */
+/* Global Theme Toggle Button leveraging retro-button styles */
 .theme-toggle {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: var(--space-4);
+  right: var(--space-4);
   background-color: var(--button-bg);
   color: var(--button-text);
-  border: none;
-  border-radius: 10px;
+  border: var(--retro-border-width) solid transparent;
+  border-radius: var(--radius-2);
   padding: 10px 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   box-shadow: 0 2px 0 rgba(0,0,0,0.15), 0 6px 14px rgba(0,0,0,0.08);
@@ -60,17 +38,17 @@
 
 .theme-toggle:hover {
   transform: translateY(-2px);
-  opacity: 0.95;
+  opacity: 0.96;
 }
 
 .theme-toggle:active {
   transform: translateY(0);
 }
 
-/* Retro-styled headings */
+/* Headings adopt retro tokens */
 .retro-title {
-  font-size: 40px;
-  letter-spacing: 1px;
+  font-size: 32px;
+  letter-spacing: 0.5px;
   color: var(--text-primary);
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
   margin: 0;
@@ -78,14 +56,14 @@
 
 .retro-subtitle {
   color: var(--text-secondary);
-  margin-top: 8px;
+  margin-top: var(--space-2);
   margin-bottom: 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Screen-reader helper / subtle note */
 .sr-note {
-  margin-top: 16px;
+  margin-top: var(--space-4);
   color: var(--text-secondary);
   font-size: 14px;
 }
@@ -93,12 +71,12 @@
 /* Mobile tweaks */
 @media (max-width: 768px) {
   .theme-toggle {
-    top: 10px;
-    right: 10px;
+    top: var(--space-3);
+    right: var(--space-3);
     padding: 8px 12px;
     font-size: 12px;
   }
   .retro-title {
-    font-size: 32px;
+    font-size: 28px;
   }
 }
