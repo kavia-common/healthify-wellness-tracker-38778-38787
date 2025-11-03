@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import AppRouter, { AuthProvider } from './routes/Router';
 
 /**
  * PUBLIC_INTERFACE
  * App
- * Root component for Healthify. Provides a minimal scaffold and theme toggling.
- * This will be extended with Router and pages in subsequent steps.
+ * Root component for Healthify. Provides theme toggling and renders Router.
  */
 function App() {
   const [theme, setTheme] = useState('light');
@@ -22,22 +22,19 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
+      {/* Global Theme Toggle Button (persists across routes) */}
+      <button
+        className="theme-toggle"
+        onClick={toggleTheme}
+        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      >
+        {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+      </button>
 
-        <h1 className="retro-title">Healthify</h1>
-        <p className="retro-subtitle">Your wellness companion</p>
-
-        <p className="sr-note">
-          Current theme: <strong>{theme}</strong>
-        </p>
-      </header>
+      {/* Router with temporary in-memory auth provider */}
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
     </div>
   );
 }
