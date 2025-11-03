@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { getEnv } from '../utils/env';
 
 /**
  * Simple storage utility around localStorage with safe-guards for SSR/tests.
@@ -64,9 +65,9 @@ function loadInitialFlags() {
       /* ignore parse errors */
     }
   }
-  // Fallback to env value
+  // Fallback to env value parsed in a resilient way
   let parsed = {};
-  const envFlags = process.env.REACT_APP_FEATURE_FLAGS;
+  const envFlags = getEnv().FEATURE_FLAGS_RAW;
   if (envFlags) {
     try {
       parsed = JSON.parse(envFlags);
@@ -96,9 +97,7 @@ export function AppProvider({ children }) {
   const [token, setToken] = useState(() => storage.get(LS_TOKEN_KEY));
   const [user, setUser] = useState(null);
   const [featureFlags, _setFeatureFlags] = useState(loadInitialFlags);
-  const [experimentsEnabled] = useState(
-    String(process.env.REACT_APP_EXPERIMENTS_ENABLED || '').toLowerCase() === 'true'
-  );
+  const [experimentsEnabled] = useState(Boolean(getEnv().EXPERIMENTS_ENABLED));
   const isAuthenticated = !!token;
 
   // Persist feature flags locally for overrides
