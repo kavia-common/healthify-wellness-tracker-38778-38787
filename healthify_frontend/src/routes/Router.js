@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -8,6 +8,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import useAuth from '../state/useAuth';
+import Loader from '../components/Loader';
 
 /**
  * PUBLIC_INTERFACE
@@ -25,95 +26,20 @@ export function PrivateRoute() {
   return <Outlet />;
 }
 
-// Minimal placeholder pages to ensure the app compiles.
-// These will be replaced or expanded later with real screens.
-function PageContainer({ title, children }) {
-  return (
-    <div style={{ padding: 24, maxWidth: 960, margin: '0 auto', textAlign: 'left' }}>
-      <h1 className="retro-title" style={{ marginBottom: 8 }}>{title}</h1>
-      <p className="retro-subtitle" style={{ marginTop: 0 }}>
-        Temporary placeholder screen
-      </p>
-      <div style={{ marginTop: 16 }}>{children}</div>
-    </div>
-  );
-}
-
-function LoginPage() {
-  const { isAuthenticated, login } = useAuth();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/dashboard';
-
-  if (isAuthenticated) {
-    return <Navigate to={from} replace />;
-  }
-
-  return (
-    <PageContainer title="Login">
-      <p className="sr-note">Authenticate to continue.</p>
-      <button
-        className="theme-toggle"
-        onClick={() => login({ email: 'demo@example.com', password: 'demo' })}
-        aria-label="Login"
-      >
-        Sign In
-      </button>
-    </PageContainer>
-  );
-}
-
-function DashboardPage() {
-  return (
-    <PageContainer title="Dashboard">
-      <p className="sr-note">Overview of your health metrics and shortcuts.</p>
-    </PageContainer>
-  );
-}
-
-function WorkoutsPage() {
-  return (
-    <PageContainer title="Workouts">
-      <p className="sr-note">Track and plan your workouts.</p>
-    </PageContainer>
-  );
-}
-
-function NutritionPage() {
-  return (
-    <PageContainer title="Nutrition">
-      <p className="sr-note">Log meals and analyze nutrients.</p>
-    </PageContainer>
-  );
-}
-
-function HabitsPage() {
-  return (
-    <PageContainer title="Habits">
-      <p className="sr-note">Build and maintain healthy routines.</p>
-    </PageContainer>
-  );
-}
-
-function InsightsPage() {
-  return (
-    <PageContainer title="Insights">
-      <p className="sr-note">AI-driven recommendations and trends.</p>
-    </PageContainer>
-  );
-}
-
-function ProfilePage() {
-  return (
-    <PageContainer title="Profile">
-      <p className="sr-note">Manage your personal info and preferences.</p>
-    </PageContainer>
-  );
-}
+// Lazy-loaded pages for code-splitting
+const Login = lazy(() => import('../pages/Login'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Workouts = lazy(() => import('../pages/Workouts'));
+const Nutrition = lazy(() => import('../pages/Nutrition'));
+const Habits = lazy(() => import('../pages/Habits'));
+const Insights = lazy(() => import('../pages/Insights'));
+const Profile = lazy(() => import('../pages/Profile'));
 
 /**
  * PUBLIC_INTERFACE
  * AppRouter
- * All application routes. Behavior:
+ * All application routes with lazy-loaded pages and Suspense loader.
+ * Behavior:
  * - Public: /login
  * - Protected: /dashboard, /workouts, /nutrition, /habits, /insights, /profile
  * - Redirects:
@@ -125,37 +51,42 @@ export default function AppRouter() {
   const { isAuthenticated } = useAuth();
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Root redirect based on auth status */}
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
+      <Suspense
+        fallback={
+          <div className="retro-container" style={{ paddingTop: 'var(--space-6)' }}>
+            <Loader label="Loading page" />
+          </div>
+        }
+      >
+        <Routes>
+          {/* Root redirect based on auth status */}
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Protected routes */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/workouts" element={<WorkoutsPage />} />
-          <Route path="/nutrition" element={<NutritionPage />} />
-          <Route path="/habits" element={<HabitsPage />} />
-          <Route path="/insights" element={<InsightsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Route>
+          {/* Protected routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/workouts" element={<Workouts />} />
+            <Route path="/nutrition" element={<Nutrition />} />
+            <Route path="/habits" element={<Habits />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
-        {/* Fallback */}
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
-      </Routes>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
