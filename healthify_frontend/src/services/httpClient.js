@@ -37,14 +37,38 @@ const LS_TOKEN_KEY = 'healthify_auth_token';
  * Format errors into a consistent shape for consumers.
  */
 function formatError(error, extra = {}) {
+  const status = error?.status || 0;
+  let message = error?.message || 'Request failed';
+
+  // Provide more helpful defaults for common statuses
+  if (!error?.message) {
+    if (status === 404) message = 'Not found';
+    if (status === 501) message = 'Not implemented';
+  }
+
   const base = {
     ok: false,
-    status: error?.status || 0,
-    message: error?.message || 'Request failed',
+    status,
+    message,
     details: error?.details || null,
     ...extra,
   };
   return base;
+}
+
+/**
+ * PUBLIC_INTERFACE
+ * classifyStatus
+ * Returns a simple classification for HTTP status codes.
+ */
+export function classifyStatus(status) {
+  if (status === 0) return 'network';
+  if (status === 401) return 'unauthorized';
+  if (status === 404) return 'not_found';
+  if (status === 501) return 'not_implemented';
+  if (status >= 500) return 'server_error';
+  if (status >= 400) return 'client_error';
+  return 'ok';
 }
 
 /**

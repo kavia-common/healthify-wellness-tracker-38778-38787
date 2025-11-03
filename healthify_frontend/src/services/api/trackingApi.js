@@ -43,11 +43,10 @@ import { httpClient } from '../httpClient';
  * Optional query params as plain object (e.g., { date: '2025-01-01' })
  */
 export async function getWorkouts(query = {}) {
-  const url = new URL(API_ENDPOINTS.WORKOUTS, window.location.origin);
+  const url = new URL(API_ENDPOINTS.WORKOUTS);
   Object.entries(query || {}).forEach(([k, v]) => {
     if (v != null) url.searchParams.set(k, String(v));
   });
-  // Use absolute URL to preserve query; httpClient can accept absolute paths
   return httpClient.get(url.toString(), { retry: 1 });
 }
 
@@ -67,7 +66,7 @@ export async function addWorkout(workout) {
  * GET /meals
  */
 export async function getNutrition(query = {}) {
-  const url = new URL(API_ENDPOINTS.MEALS, window.location.origin);
+  const url = new URL(API_ENDPOINTS.MEALS);
   Object.entries(query || {}).forEach(([k, v]) => {
     if (v != null) url.searchParams.set(k, String(v));
   });
@@ -89,7 +88,7 @@ export async function addMeal(meal) {
  * GET /habits
  */
 export async function getHabits(query = {}) {
-  const url = new URL(API_ENDPOINTS.HABITS, window.location.origin);
+  const url = new URL(API_ENDPOINTS.HABITS);
   Object.entries(query || {}).forEach(([k, v]) => {
     if (v != null) url.searchParams.set(k, String(v));
   });

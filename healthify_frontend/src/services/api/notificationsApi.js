@@ -1,5 +1,5 @@
 import { httpClient } from '../httpClient';
-import { apiPath } from '../../utils/constants';
+import { API_ENDPOINTS } from '../../utils/constants';
 
 /**
  * Types (documentation):
@@ -14,15 +14,13 @@ import { apiPath } from '../../utils/constants';
  * }
  */
 
-// Not present in constants; define path using apiPath helper:
 /**
  * PUBLIC_INTERFACE
  * getNotifications
  * GET /notifications
  */
 export async function getNotifications(query = {}) {
-  const base = apiPath('/notifications');
-  const url = new URL(base, window.location.origin);
+  const url = new URL(API_ENDPOINTS.NOTIFICATIONS);
   Object.entries(query || {}).forEach(([k, v]) => {
     if (v != null) url.searchParams.set(k, String(v));
   });

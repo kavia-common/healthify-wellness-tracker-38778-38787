@@ -4,19 +4,40 @@ import AppRouter from './routes/Router';
 import RetroNavbar from './components/RetroNavbar';
 import BottomNav from './components/BottomNav';
 import { AppProvider } from './state/AppProvider';
+import Toast from './components/Toast';
+import { runHealthcheck } from './utils/healthcheck';
 
 /**
  * PUBLIC_INTERFACE
  * App
  * Root component for Healthify. Provides theme toggling and renders Router.
+ * Also performs a backend connectivity healthcheck at startup and shows a toast on failure.
  */
 function App() {
   const [theme, setTheme] = useState('light');
+  const [healthToast, setHealthToast] = useState(null);
 
   // Apply theme to document root for CSS variables
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // On app start, run a backend healthcheck and show a banner/toast if it fails
+  useEffect(() => {
+    const ac = new AbortController();
+    (async () => {
+      const res = await runHealthcheck(ac.signal);
+      if (!res.ok) {
+        setHealthToast({
+          type: res.status >= 500 ? 'error' : 'warning',
+          message:
+            res.message ||
+            (res.status ? `API healthcheck failed (${res.status})` : 'API unreachable'),
+        });
+      }
+    })();
+    return () => ac.abort();
+  }, []);
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
@@ -59,6 +80,14 @@ function App() {
       </main>
 
       <BottomNav items={navItems} />
+
+      {healthToast ? (
+        <Toast
+          type={healthToast.type}
+          message={healthToast.message}
+          onClose={() => setHealthToast(null)}
+        />
+      ) : null}
     </div>
   );
 }
